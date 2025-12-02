@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Hylo XP → Airdrop Estimator</title>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; }
+    label { display: block; margin: 12px 0; }
+    input { padding: 6px 8px; width: 100%; max-width: 200px; }
+    button { padding: 6px 12px; cursor: pointer; margin-top: 8px; }
+    small { display: block; margin-top: 8px; opacity: 0.8; }
+  </style>
+</head>
+<body>
+  <h2>Hylo XP → Airdrop (Fabiano case)</h2>
+  <p>Assumptions: FDV = $50M, 7% to airdrop, 5B total XP → 1 XP ≈ $0.00007</p>
+
+  <label>
+    Your XP:
+    <input id="xp" type="number" placeholder="48000000" />
+  </label>
+
+  <button onclick="calc()">Estimate</button>
+
+  <p id="out"></p>
+
+  <small>
+    Formula: airdrop ≈ XP × 0.00007<br/>
+    Pure speculation based on Fabiano’s tweet. Real airdrop can be lower, higher, or zero.
+  </small>
+
+  <script>
+    function calc() {
+      const xp = Number(document.getElementById('xp').value || 0);
+      const valuePerXp = 0.00007; // Fabiano mid-case: 1 XP ≈ $0.00007
+      const usd = xp * valuePerXp;
+      document.getElementById('out').textContent =
+        `Rough mid-case ≈ $${usd.toLocaleString(undefined, {maximumFractionDigits: 2})}.`;
+    }
+  </script>
+</body>
+</html>
