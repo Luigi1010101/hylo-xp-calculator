@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hylo XP → Airdrop Estimator</title>
+  <title>Hylo XP Calculator – Hylo XP → Airdrop Estimator</title>
+  <meta name="description" content="Hylo XP calculator to estimate a rough airdrop value based on your Hylo XP, FDV assumptions and airdrop percentage. Uses Fabiano's Hylo XP framework with a 50B XP total." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -47,6 +49,10 @@
       background: #fafafa;
       min-height: 40px;
     }
+    .article-link {
+      margin-top: 12px;
+      font-size: 14px;
+    }
     small {
       display: block;
       margin-top: 10px;
@@ -59,12 +65,12 @@
   </style>
 </head>
 <body>
-  <h1>Hylo XP → Airdrop Estimator</h1>
+  <h1>Hylo XP Calculator (Hylo XP → Airdrop Estimator)</h1>
   <p>
-    Rough calculator for potential Hylo airdrop value based on XP.
+    This Hylo XP calculator is a rough tool to estimate potential Hylo airdrop value based on your XP.
   </p>
   <p>
-    Assumes a fixed total of <strong>50,000,000,000 XP</strong> (50B), calibrated so that at
+    It assumes a fixed total of <strong>50,000,000,000 XP</strong> (50B), calibrated so that at
     FDV = $50M and 7% airdrop, 1 XP ≈ $0.00007 as in
     <a href="https://x.com/FabianoSolana/status/1995463207708983364" target="_blank">@FabianoSolana</a>'s example.
   </p>
@@ -76,22 +82,30 @@
     <label for="airdropPct">Airdrop allocation (%)</label>
     <input id="airdropPct" type="number" placeholder="7" value="7" />
 
-    <label for="xp">Your XP</label>
+    <label for="xp">Your Hylo XP</label>
     <input id="xp" type="number" placeholder="48000000" />
 
     <button onclick="calc()">Estimate</button>
   </div>
 
   <div class="output" id="out">
-    Enter your XP, FDV and airdrop % and click “Estimate”.
+    Enter your Hylo XP, FDV and airdrop % and click “Estimate”.
   </div>
+
+  <p class="article-link">
+    If you want the full breakdown of the XP system and my path to Hylord in Season 0 using these assumptions,
+    I wrote it up here:
+    <a href="https://x.com/Luigi1010101/status/1995956320344686714" target="_blank">
+      How I Farmed Hylo XP to Hylord in Season 0 (Loops, Vaults, YT)
+    </a>.
+  </p>
 
   <small>
     Formula used:<br/>
     airdrop pool = FDV × (airdrop% / 100)<br/>
     value per XP = airdrop pool ÷ 50,000,000,000<br/>
     your airdrop ≈ your XP × value per XP<br/><br/>
-    This is a rough, purely speculative model based on numbers discussed by
+    This Hylo XP calculator is a rough, purely speculative model based on numbers discussed by
     <a href="https://x.com/FabianoSolana" target="_blank">@FabianoSolana</a>.
     Real airdrop mechanics, FDV and allocations can be very different (or zero).
     Tool put together by
