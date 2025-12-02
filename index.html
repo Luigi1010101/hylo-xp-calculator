@@ -4,38 +4,135 @@
   <meta charset="UTF-8" />
   <title>Hylo XP → Airdrop Estimator</title>
   <style>
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; }
-    label { display: block; margin: 12px 0; }
-    input { padding: 6px 8px; width: 100%; max-width: 200px; }
-    button { padding: 6px 12px; cursor: pointer; margin-top: 8px; }
-    small { display: block; margin-top: 8px; opacity: 0.8; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      max-width: 640px;
+      margin: 40px auto;
+      padding: 0 16px 40px;
+      line-height: 1.4;
+    }
+    h1, h2 {
+      margin-bottom: 0.4rem;
+    }
+    p {
+      margin: 0.3rem 0;
+    }
+    label {
+      display: block;
+      margin: 12px 0 4px;
+      font-weight: 500;
+    }
+    input {
+      padding: 6px 8px;
+      width: 100%;
+      max-width: 260px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 8px 14px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    .inputs {
+      margin: 16px 0 8px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .output {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      background: #fafafa;
+      min-height: 40px;
+    }
+    small {
+      display: block;
+      margin-top: 10px;
+      opacity: 0.8;
+      font-size: 12px;
+    }
+    a {
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
-  <h2>Hylo XP → Airdrop (Fabiano case)</h2>
-  <p>Assumptions: FDV = $50M, 7% to airdrop, 5B total XP → 1 XP ≈ $0.00007</p>
+  <h1>Hylo XP → Airdrop Estimator</h1>
+  <p>
+    Rough calculator for potential Hylo airdrop value based on XP.
+  </p>
+  <p>
+    Assumes a fixed total of <strong>5,000,000,000 XP</strong> (5B), same as in
+    <a href="https://x.com/FabianoSolana" target="_blank">@FabianoSolana</a>'s example.
+  </p>
 
-  <label>
-    Your XP:
+  <div class="inputs">
+    <label for="fdv">FDV (USD)</label>
+    <input id="fdv" type="number" placeholder="50000000" value="50000000" />
+
+    <label for="airdropPct">Airdrop allocation (%)</label>
+    <input id="airdropPct" type="number" placeholder="7" value="7" />
+
+    <label for="xp">Your XP</label>
     <input id="xp" type="number" placeholder="48000000" />
-  </label>
 
-  <button onclick="calc()">Estimate</button>
+    <button onclick="calc()">Estimate</button>
+  </div>
 
-  <p id="out"></p>
+  <div class="output" id="out">
+    Enter your XP, FDV and airdrop % and click “Estimate”.
+  </div>
 
   <small>
-    Formula: airdrop ≈ XP × 0.00007<br/>
-    Pure speculation based on Fabiano’s tweet. Real airdrop can be lower, higher, or zero.
+    Formula used:<br/>
+    airdrop pool = FDV × (airdrop% / 100)<br/>
+    value per XP = airdrop pool ÷ 5,000,000,000<br/>
+    your airdrop ≈ your XP × value per XP<br/><br/>
+    This is a rough, purely speculative model based on numbers discussed by
+    <a href="https://x.com/FabianoSolana" target="_blank">@FabianoSolana</a>.
+    Real airdrop mechanics, FDV and allocations can be very different (or zero).
+    Tool put together by
+    <a href="https://x.com/Luigi1010101" target="_blank">@Luigi1010101</a>.
   </small>
 
   <script>
+    function formatUsd(x) {
+      return x.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
     function calc() {
       const xp = Number(document.getElementById('xp').value || 0);
-      const valuePerXp = 0.00007; // Fabiano mid-case: 1 XP ≈ $0.00007
+      const fdv = Number(document.getElementById('fdv').value || 0);
+      const airdropPct = Number(document.getElementById('airdropPct').value || 0);
+      const totalXp = 5_000_000_000; // 5B total XP assumption
+
+      const out = document.getElementById('out');
+
+      if (!xp || !fdv || !airdropPct) {
+        out.textContent = "Please fill in XP, FDV and airdrop % first.";
+        return;
+      }
+
+      const airdropPool = fdv * (airdropPct / 100);
+      const valuePerXp = airdropPool / totalXp;
       const usd = xp * valuePerXp;
-      document.getElementById('out').textContent =
-        `Rough mid-case ≈ $${usd.toLocaleString(undefined, {maximumFractionDigits: 2})}.`;
+      const perMillion = valuePerXp * 1_000_000;
+
+      out.innerHTML =
+        "With FDV of <strong>$" + formatUsd(fdv) + "</strong> and " +
+        "<strong>" + airdropPct + "%</strong> to the airdrop pool:" +
+        "<br/><br/>" +
+        "• Estimated value per XP: <strong>$" + formatUsd(valuePerXp) + "</strong>" +
+        "<br/>" +
+        "• Estimated value of <strong>" + xp.toLocaleString() + " XP</strong>: " +
+        "<strong>$" + formatUsd(usd) + "</strong>" +
+        "<br/>" +
+        "• Approx. value per 1M XP: <strong>$" + formatUsd(perMillion) + "</strong>";
     }
   </script>
 </body>
